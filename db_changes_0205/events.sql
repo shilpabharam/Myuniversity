@@ -1,0 +1,1 @@
+INSERT INTO `MYUNIVERSITY`.`EVENTS` (`ID`, `EVENT_NAME`, `EVENT_FROM_TIME`, `EVENT_TO_TIME`, `EVENT_SHORT_DESC`, `EVENT_ADDRESS`, `EVENT_CREATED_BY`, `UNIVERSITY_ID`) VALUES ('1', 'intexication', '2015-02-17 3:00:00', '2015-02-17 03:30:00', 'departmental event', 'wami Vivekanand Auditorium', '3', '1');

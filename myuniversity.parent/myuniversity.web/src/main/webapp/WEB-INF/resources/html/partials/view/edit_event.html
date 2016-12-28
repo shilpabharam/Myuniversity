@@ -1,0 +1,374 @@
+<!-- <!DOCTYPE html> -->
+<!-- <html style="background: white"> -->
+<!-- <head> -->
+<!-- <meta charset="utf-8"> -->
+<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<!-- <title>Events</title> -->
+
+<!-- <script -->
+<!-- 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
+<!-- <script src="resources/js/jquery/jquery.min.js"></script> -->
+<!-- <script src="resources/js/datepicker/moment.js"></script> -->
+<!-- <script src="resources/js/datepicker/bootstrap.min.js"></script> -->
+<!-- <script src="resources/js/datepicker/bootstrap-datetimepicker.min.js"></script> -->
+
+<!-- <link rel="stylesheet" href="resources/css/datepicker/bootstrap.min.css" /> -->
+<!-- <link rel="stylesheet" -->
+<!-- 	href="resources/css/datepicker/bootstrap-datetimepicker.min.css" /> -->
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
+<!-- <link rel="stylesheet" href="resources/css/app.css" /> -->
+
+
+
+<style>
+.border-main {
+	padding: 10px;
+	border: 1px solid #BF5573;
+	border-radius: 5px;
+}
+
+.border {
+	padding: 1px;
+	border: 1px solid #BF5573;
+	border-radius: 3px;
+}
+
+.dropdown-spacing {
+	padding: 10px;
+	padding-top: 20px;
+	padding-left: 0px;
+}
+/* enable absolute positioning */
+.inner-addon {
+	position: relative;
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+	position: absolute;
+	padding: 10px;
+	pointer-events: none;
+}
+
+/* align icon */
+.left-addon .glyphicon {
+	left: 0px;
+}
+
+.right-addon .glyphicon {
+	right: 0px;
+}
+
+/* add padding  */
+.left-addon input {
+	padding-left: 30px;
+}
+
+.right-addon input {
+	padding-right: 30px;
+}
+
+.table-head {
+	background-color: #BF5555;
+}
+</style>
+<!-- </head> -->
+<!-- <body> -->
+	<!--#########################################################-->
+
+	<div class="container" ng-controller="editController"
+		ng-init="getEventType();getAllDepartments();getSocialBadge();getAllScreenData();getEditEventData();">
+		<form name="eventEditForm" novalidate="novalidate">
+			<div class="row">
+				<fieldset class="well the-fieldset">
+					<legend class="the-legend legend-size eventlegendss">Edit Event</legend>
+					<div class="col-md-12">
+
+						<fieldset class="well the-fieldset">
+							<legend class="the-legend legend-size eventlegendss">General</legend>
+							<div class="col-sm-12">
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red">*</label> <label
+										for="eventName">Event Name:</label> <input type="text"
+										class="form-control" name="eventName" id="eventNameEdit"
+										placeholder="" ng-model="eventEdit.eventName" required />
+									<p id="eventNameErrorEdit"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red">*</label> <label
+										for="eventLoc">Event Location:</label> <input type="text"
+										class="form-control" id="eventLocEdit" placeholder=""
+										ng-model="eventEdit.eventAddress" required />
+									<p id="eventLocErrorEdit"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red">*</label> <label
+										for="eventType">Event Type:</label> <select id="eventTypeEdit"
+										class="form-control" ng-model="eventTypeId">
+										<option value="0">Select Event Type</option>
+										<option ng-repeat="event in eventTypes" value="{{event.id}}">{{event.eventType}}</option>
+									</select>
+									<p id="eventTypeErrorEdit"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red">*</label> <label
+										for="capacity">Capacity:</label> <input type="text"
+										class="form-control" id="capacityEdit" placeholder=""
+										ng-model="eventEdit.capacity">
+									<p id="eventCapacityErrorEdit"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red">*</label> <label
+										for="eventDate">Start Date&Time:</label>
+									<div class='input-group date' id='datetimepickerEdit1'>
+										<input type='text' id="eventFromTimeEdit" class="form-control"
+											ng-model="eventFromDateEdit"/> <span
+											class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+									<p id="eventStartErrorEdit"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red;">*</label> <label
+										for="eventDate">End Date&Time:</label>
+									<div class='input-group date' id='datetimepickerEdit2'>
+										<input type='text' id="eventToTimeEdit" class="form-control"
+											ng-model="eventToDateEdit"/> <span
+											class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+									<p id="eventEndErrorEdit"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="published">Published:</label><br /> <input
+										type="checkbox" ng-model="checkedPublishEdit">
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="featured">Featured:</label><br /> <input
+										type="checkbox" checked ng-model="eventEdit.featured">
+								</div>
+							</div>
+						</fieldset>
+
+						
+					</div>
+					<div class="col-sm-12">
+						<fieldset class="well the-fieldset">
+							<legend class="the-legend legend-size eventlegendss">Event Description</legend>
+
+							<div class="form-group col-lg-3 col-sm-4 col-md-3" style="padding: 5px;">
+								<label>Event short description:</label>
+								<textarea class="form-control" maxlength="100" rows="3"
+									ng-model="eventEdit.eventShortDesc">
+								</textarea>
+							</div>
+							<div class="form-group col-lg-3 col-sm-4 col-md-3" style="padding: 5px;">
+								<label for"star" style="color: red">*</label> <label>Event
+									long description:</label>
+								<textarea class="form-control" rows="3"
+									ng-model="eventEdit.eventLongDesc" id="eventLongDescEdit"></textarea>
+								<p id="eventLongErrorEdit"></p>
+							</div>
+							<div class="form-group col-lg-3 col-sm-4 col-md-3" style="padding: 5px;">
+								<label for"star" style="color: red">*</label> <label
+									for="keywordSearch">Keyword Search:</label>
+								<textarea class="form-control" rows="3"
+									ng-model="eventEdit.keyword"
+									placeholder="keywords are comma seperated.." id="keySearchEdit"></textarea>
+								<p id="keySearchErrorEdit"></p>
+							</div>
+							<div class="form-group col-lg-3 col-sm-4 col-md-3" style="padding: 5px;">
+								<label for="sponcer">Sponsor:</label>
+								<textarea class="form-control" rows="3"
+									ng-model="eventEdit.sponsor"
+									placeholder="Sponsors are comma seperated.."></textarea>
+							</div>
+
+						</fieldset>
+					</div>
+					<div class="col-sm-12">
+					 <fieldset class="well the-fieldset">
+							<legend class="the-legend legend-size eventlegendss">
+								<label for"star" style="color: red">*</label>Assign Badges
+							</legend>
+							<p id="checkedErrorEdit"></p>
+							<input type="checkbox" ng-model="checkedEdit"
+								 ng-change="UncheckSkillvalidation()"> Skill Badges &nbsp &nbsp
+							&nbsp <input type="checkbox" id="socialCheckEdit"
+								ng-model="checked_social_edit"
+								ng-change="checkForEditValidation()"> Social Badges <br />
+							<br />
+							<fieldset class="well the-fieldset" ng-show="checkedEdit">
+								<legend class="the-legend legend-size eventlegendss">Skill Badges</legend>
+								<p id="assginSkillErrorEdit"></p>
+								<button type="button" class="btn btn-danger pull-right"
+									ng-click="addNewRowSkillEdit()"
+									style="background-color: #c10037">Add Skill Badges</button>
+								<br /> <br />
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>S.No</th>
+											<th>Skill
+												Names&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+											<th>Start Date&Time</th>
+											<th>End Date&Time</th>
+											<th>Duration</th>
+											<th>Category</th>
+											<th>Delete</th>
+										</tr>
+									</thead>
+									<tbody id="skillsTableEdit">
+
+									</tbody>
+								</table>
+							</fieldset>
+							<fieldset class="well the-fieldset" ng-show="checked_social_edit">
+								<legend class="the-legend legend-size eventlegendss">Social Badges</legend>
+								<p id="assginSocialErrorEdit"></p>
+								<button type="button" class="btn btn-danger pull-right"
+									ng-click="addNewRowSocialEdit()"
+									style="background-color: #c10037">Add Social Badges</button>
+								<br /> <br />
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>S.No</th>
+											<th>Badge Name</th>
+											<th>Description</th>
+											<th>Delete</th>
+										</tr>
+									</thead>
+									<tbody id="socialTableEdit">
+									</tbody>
+								</table>
+                            </fieldset>
+						</fieldset>
+					</div>
+					<div class="col-sm-12">
+					  <fieldset class="well the-fieldset">
+					   <fieldset class="well the-fieldset col-lg-3 col-md-6 col-sm-6" style="margin:1px; background-color:white;">
+							<legend class="the-legend legend-size eventlegendss">
+								<label for"star" style="color: red">* </label>Tags:
+							</legend>
+							<p id="tagEditError"></p>
+							<div class="form-group" style="height: 200px; overflow: auto;">
+							 <ul>
+								<li class="tag" ng-repeat="tag in tags"
+									style="list-style: none;"><input class="tagValEdit"
+									type="checkbox" value="{{tag.id}}"> {{tag.tagName}}</li>
+							 </ul>
+							</div>
+						</fieldset>
+						<fieldset class="well the-fieldset col-lg-4 col-md-6 col-sm-6" style="margin:1px; background-color:white;">
+                            <legend class="the-legend legend-size eventlegendss">
+								<label for="star" style="color: red">* </label>Interests:
+							</legend>
+							<p id="interestEditError"></p>
+							<div class="form-group" style="height: 200px; overflow: auto;">
+								<ul>
+
+									<li class="interest" ng-repeat="interest in interests"
+										style="list-style: none;"><input class="interestValEdit"
+										type="checkbox" value="{{interest.id}}">
+										{{interest.interestName}}</li>
+								</ul>
+							</div>
+						</fieldset>
+						<fieldset class="well the-fieldset col-lg-4 col-md-6 col-sm-6" style="margin:1px; background-color:white;">
+
+							<legend class="the-legend legend-size eventlegendss">
+								Advertisements:
+							</legend>
+							
+							<div class="form-group" style="height: 200px; overflow: auto;">
+								<ul>
+									<li class="advertisement"
+										ng-repeat="advertisement in advertisement"
+										style="list-style: none;"><input
+										class="advertisementValEdit" type="checkbox"
+										value="{{advertisement.id}}"> {{advertisement.name}}</li>
+								</ul>
+							</div>
+						</fieldset>
+					  </fieldset>
+					</div>
+				    <div class="col-sm-12">
+				      <button type="submit"
+							class="btn btn-danger pull-right btn-margin-right"
+							style="padding: 5px; margin: 5px; width: 100px; background-color: #c10037"
+							ng-click="submitEditForm()">Update</button>
+				    </div>
+				</fieldset>
+
+			</div>
+		</form>
+		
+		<div class="modal fade" id="editEventModel" role="dialog"
+		aria-labelledby="editEventLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-liabel="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="editEventLabel"
+						style="text-align: center; color: green;"></h4>
+					<h4 class="modal-title" id="editEventErrorLabel"
+						style="text-align: center; color: red;"></h4>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- 	Social badge validation popup -->
+	<div class="modal fade" id="editEventModelSocialCheck" role="dialog"
+		aria-labelledby="editEventLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+
+				<div class="modal-body">
+					<h4 class="modal-title" id="editEventLabelSocialCheck"
+						style="text-align: center; color: green;">Do you want to
+						delete the data?</h4>
+						<button type="button" class="btn btn-danger pull-right"
+							style="background-color: #c10037; display: inline;" ng-click="UncheckedSocial()">Yes</button>
+						<button type="button" class="btn btn-danger"
+							style="background-color: #c10037; display: inline;" ng-click="cantUncheckedSocial()">No</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 	Skill badge validation popup -->
+	<div class="modal fade" id="editEventModelSkillCheck" role="dialog"
+		aria-labelledby="editEventLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<h4 class="modal-title" id="editEventLabelSocialCheck"
+						style="text-align: center; color: orange;">Do you want to
+						delete the data?</h4>
+						<button type="button" class="btn btn-danger pull-right"
+							style="background-color: #c10037; display: inline;" ng-click="UncheckedSkill()">Yes</button>
+						<button type="button" class="btn btn-danger"
+							style="background-color: #c10037; display: inline;" ng-click="cantUncheckedSkill()">No</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	</div>
+
+	<script src="resources/js/custom/screen_app.js"></script>
+<!-- </body> -->
+<!-- </html> -->

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html data-ng-app="app" style="background: white">
+<head>
+
+<link href="resources/css/bootstrap/bootstrap-switch.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="resources/css/bootstrap/bootstrap.min.css"> 
+<!-- <link type="text/css" href="resources/css/datepicker/bootstrap-datetimepicker.min.css" /> -->
+<!-- <link rel="stylesheet" href="resources/css/datepicker/datetimepicker.css" /> -->
+<link rel="stylesheet" type="text/css" href="resources/css/angular-xeditable/xeditable.css">
+<link rel="stylesheet" href="resources/css/app.css">
+<link rel="stylesheet" href="resources/js/jquery/jquery-ui.min.css">
+<link rel="stylesheet" href="resources/css/bootstrap/bootstrap-datetimepicker.css">
+
+
+<script src="resources/js/jquery/jquery.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="resources/js/jquery/jquery-ui.min.js"></script>
+<script src="resources/js/datepicker/moment.js"></script>
+ <script src="resources/css/bootstrap/bootstrap-datetimepicker.js"></script>
+<script src="resources/js/angular/angular.js"></script>
+<script src="resources/js/angular/angular-route.js"></script>
+<script src="resources/js/angular/angular-sanitize.min.js"></script>
+<script src="resources/js/angular-xeditable/xeditable.js"></script>
+<script src="resources/js/angular-local-storage/angular-local-storage.js"></script>
+<script src="resources/js/custom/app.js"></script>
+<script src="resources/js/custom/config.js"></script>
+<script src="resources/js/custom/listener.js"></script>
+<script src="resources/js/custom/directive.js"></script>
+<script src="resources/js/custom/filters.js"></script>
+<script src="resources/js/custom/controller.js"></script>
+<script src="resources/js/custom/badgeController.js"></script>
+<script src="resources/js/custom/editController.js"></script>
+<script src="resources/js/custom/service.js"></script>
+
+
+<title data-ng-bind="title">Dashboard</title>
+
+</head>
+<body data-ng-controller="MainController" ng-cloak>
+	<div ng-include
+		src="'resources/html/partials/view/header.html'"></div>
+	<div data-ng-view></div>
+</body>
+</html>

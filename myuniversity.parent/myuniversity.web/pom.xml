@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.codecoop.myuniversity</groupId>
+		<artifactId>myuniversity.parent</artifactId>
+		<version>1.0</version>
+	</parent>
+	<artifactId>myuniversity.web</artifactId>
+	<packaging>war</packaging>
+	<name>myuniversity.web maven app</name>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<dependency>
+			<groupId>com.codecoop.myuniversity</groupId>
+			<artifactId>myuniversity.core</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>myuniversity</finalName>
+	</build>
+</project>

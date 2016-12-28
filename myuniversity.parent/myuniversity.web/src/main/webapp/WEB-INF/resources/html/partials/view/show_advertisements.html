@@ -1,0 +1,63 @@
+<style>
+td {
+    max-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+</style>
+
+<div class="container">
+ <div class="col-md-12">
+	  <fieldset class="fsStyle"  id="showadvfieldset">
+		<legend class="legendStyle">
+	      Current Ads
+		</legend>
+		<div>
+		  <table class="table table-striped">
+		    <thead>
+		      <tr class="danger">
+		        <th>Name</th>
+		        <th>From_Date</th>
+		        <th>To_Date</th>
+		        <th>Web URL</th>
+		        <th>Description</th>
+		        <th>Published</th>
+		        <th>Action</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr ng-repeat="item in showadarray.advertisements">
+		        <td>{{item.name}}</td>
+		        <td>{{item.fromDate|date:"MM/dd/yyyy h:mma"}}</td>
+		        <td>{{item.toDate|date:"MM/dd/yyyy h:mma"}}</td>
+		        <td>{{item.webURL}}</td>
+		        <td>{{item.description}}</td>
+		        <td>{{item.isPublished}}</td>
+		        <td>
+		         <a href="/myuniversity/#/createAdvertisement" data-attr="edit_{{$index+1}}" ng-click="getadv(item)" class="glyphicon glyphicon-edit"></a>
+		         <span class="glyphicon glyphicon-trash"  ng-click="deleteadv(item.id)"></span>
+		        </td>
+		      </tr>
+		    </tbody>
+		  </table>
+		 </div>
+	  </fieldset>
+ </div>
+      <ul class="pagination pull-right" id="showadvpag">
+			<li class="active paginationli" ng-if="$index==0"  ng-repeat="count in pageCount">
+				<a href="" ng-click="showadv(this)">{{count}}</a>
+			</li>
+			<li class="paginationli"  ng-if="$index!=0" ng-repeat="count in pageCount">
+				<a href="" ng-click="showadv(this)">{{count}}</a>
+			</li>
+		</ul>
+
+</div>
+<script type="text/javascript">	
+	$(document).on('click',"li.paginationli",function() {
+		console.log("clicked li");
+		$(this).siblings().removeClass('active');
+	    $(this).addClass('active');
+	});
+</script>

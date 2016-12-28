@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>Sign in - MyUniversity</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cmsites.a.ssl.fastly.net/marketing/127/authentication/styles/all.css" type="text/css" />
+<link rel="stylesheet" href="resources/css/login.css">
+    <script src="resources/js/jquery/jquery.js"></script>
+	<script src="resources/js/jquery/jquery-ui.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="resources/js/angular/angular.js"></script>
+	<script src="resources/js/angular/angular-route.js"></script>
+	<script src="resources/js/angular/angular-sanitize.min.js"></script>
+	<script src="resources/js/bootstrap/bootstrap.js"></script>
+	<script src="resources/js/angular-xeditable/xeditable.js"></script>
+	<script src="resources/js/angular-local-storage/angular-local-storage.js"></script>
+	<script src="resources/js/custom/app.js"></script>
+	<script src="resources/js/custom/config.js"></script>
+	<script src="resources/js/custom/listener.js"></script>
+	<script src="resources/js/custom/directive.js"></script>
+	<script src="resources/js/custom/filters.js"></script>
+	<script src="resources/js/custom/controller.js"></script>
+	<script src="resources/js/custom/service.js"></script>
+	
+</head>
+<body onload='document.loginForm.username.focus();'>
+
+	<div id="inner">
+<h1 id="signinLogo"></h1>
+<h1 id="headline" style="color:rgb(193,0,55);">MyUniversity</h1>
+
+	<div class="container" id="signinBlock">
+	
+		<form class="form-signin" name="loginForm" action="j_spring_security_check" method="POST">
+		
+			<h4 class="login-error" id="loginErrorMsg"  style="color:red">Please login with valid Admin credentials </h4>
+			<label for="inputEmail" class="sr-only">Email address</label> <input
+				type="text" class="form-control" placeholder="Username"
+				id='username' name='j_username' required autofocus> <br><label
+				for="inputPassword" class="sr-only">Password</label> <input
+				type="password" class="form-control" placeholder="Password"
+				id='password' name='j_password' required>
+			<button class="btn btn-lg btn-default btn-block" type="submit" style="background-color:rgb(193,0,55);color:white;">Sign
+				in</button>
+			<a href="#" type="button" id="forgotClear" class="pull-right" style="color:rgb(193,0,55);" data-target="#changepasswordmodal" data-toggle="modal">Forgot Password?</a>
+		</form>
+</div>
+<!-- Modal starts-->
+<div id="changepasswordmodal" ng-app="app" class="modal fade" role="dialog" aria-hidden="true" style="top:15%;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="text-center">Forgot Password</h4>
+      </div>
+      <div class="modal-body" style="min-height:100px; max-height:200px; overflow:auto;">
+       <form name="passwordreseet">
+	     <div ng-controller="MainController">
+			<p id="errorpwd" style="color:red"></p>
+	        <input type="text" id="forgotEmail" ng-model="passwordRequest" name="email" class="form-control resetemail" placeholder="Please enter your email..." required><br>
+	        <button class="btn btn-primary pull-right" ng-click="forgotPasswd();" type="submit">Send</button>       
+	     </div>
+       </form> 
+        
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- Modal close-->
+	
+	</div>
+<script src="resources/js/custom/login.js"></script>
+</body>
+</html>

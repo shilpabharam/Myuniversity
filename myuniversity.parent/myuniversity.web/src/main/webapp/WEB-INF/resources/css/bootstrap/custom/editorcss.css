@@ -1,0 +1,22 @@
+.nactive{
+	display:none;
+}
+
+.ckhide{
+	display:none;
+}
+
+.thumbnail.active {
+    background: none repeat scroll 0 0 green;
+    border: 5px solid green;
+}
+
+.hoverthumbnail:hover{
+	background: none repeat scroll 0 0 green;
+    border: 5px solid green;
+}
+
+.borderLeft{
+	background: none repeat scroll 0 0 #fff;
+    padding: 15px;
+}

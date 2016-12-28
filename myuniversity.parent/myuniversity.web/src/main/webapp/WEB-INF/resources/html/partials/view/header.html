@@ -1,0 +1,79 @@
+
+<nav class="navbar navbar-theme">
+		<div class="container-fluid" style ng-init="getloggedUser();getloggedUserId();">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+					aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"></span></a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+<!-- 					<li class="active-theme"><a href="#">Dashboard  -->
+<!-- 					<span class="sr-only">(current)</span></a></li> -->
+							
+					<li class=""><a href="#"><span class="glyphicon glyphicon-home"><span class="sr-only">(current)</span></a></li>	
+							
+					<li class="dropdown"><a href="" class="dropdown-toggle"
+						data-toggle="dropdown">Events <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/myuniversity/#/createEvent">Create Event</a></li>
+							<li><a href="#">Show Events</a></li>
+						</ul>
+					</li>
+					<li class=""><a href="">Students</a></li>
+					<li class="dropdown"><a href="" class="dropdown-toggle"
+						data-toggle="dropdown">Advertisements <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a ng-click="creatteeadv()" href="/myuniversity/#/createAdvertisement">Create Advertisement</a></li>
+							<li><a ng-click="showadv();" href="/myuniversity/#/showAdvertisements">Show Advertisement</a></li>
+							
+						</ul>
+					</li>
+<!-- 					<li class=""><a href="#">Advertisement</a></li> -->
+					<li class=""><a href="/myuniversity/#/badges">Badges</a></li>
+					
+				</ul>
+				<ul class="nav navbar-nav navbar-right" ng-controller="MainController">
+					<li class="dropdown"><a href="#" class="dropdown-toggle" id="loggedUserName"
+						data-toggle="dropdown"></a>
+						<!--  span class="caret"></span -->
+						<ul class="dropdown-menu">
+							<li class=""><a href="j_spring_security_logout">Logout</a></li>
+						</ul>
+					</li>
+
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+	<script>
+	
+	 $(function(){
+		    $(".dropdown").hover(            
+		            function() {
+		                $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+		                $(this).toggleClass('open');
+		                $('b', this).toggleClass("caret caret-up");                
+		            },
+		            function() {
+		                $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+		                $(this).toggleClass('open');
+		                $('b', this).toggleClass("caret caret-up");                
+		            });
+		    });
+		    
+	
+	
+	
+	</script>

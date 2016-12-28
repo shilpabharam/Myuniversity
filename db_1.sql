@@ -1,0 +1,570 @@
+CREATE DATABASE  IF NOT EXISTS `MYUNIVERSITY` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `MYUNIVERSITY`;
+-- MySQL dump 10.13  Distrib 5.6.17, for Win64 (x86_64)
+--
+-- Host: localhost    Database: MYUNIVERSITY_1
+-- ------------------------------------------------------
+-- Server version	5.6.21-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `DEPARTMENTS`
+--
+
+DROP TABLE IF EXISTS `DEPARTMENTS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `DEPARTMENTS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `DEP_NAME` varchar(45) DEFAULT NULL,
+  `VALID` tinyint(50) DEFAULT NULL,
+  `UNIVERSITY_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `UNIVERSITY_FK_idx` (`UNIVERSITY_ID`),
+  CONSTRAINT `UNIVERSITY_FK` FOREIGN KEY (`UNIVERSITY_ID`) REFERENCES `UNIVERSITY` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `DEPARTMENTS`
+--
+
+LOCK TABLES `DEPARTMENTS` WRITE;
+/*!40000 ALTER TABLE `DEPARTMENTS` DISABLE KEYS */;
+/*!40000 ALTER TABLE `DEPARTMENTS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ENROLLED_EVENTS`
+--
+
+DROP TABLE IF EXISTS `ENROLLED_EVENTS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ENROLLED_EVENTS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `USER_ID` bigint(25) DEFAULT NULL,
+  `EVENT_ID` bigint(25) DEFAULT NULL,
+  `IS_COMPLETED` tinyint(50) DEFAULT NULL,
+  `IS_ATTENDED` tinyint(50) DEFAULT NULL,
+  `EVENT_CHECKED_IN` tinyint(50) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `USER_ID_idx` (`USER_ID`),
+  KEY `EVENT_ID_idx` (`EVENT_ID`),
+  CONSTRAINT `EVENT_ID` FOREIGN KEY (`EVENT_ID`) REFERENCES `EVENTS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `USER_ID` FOREIGN KEY (`USER_ID`) REFERENCES `USERS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ENROLLED_EVENTS`
+--
+
+LOCK TABLES `ENROLLED_EVENTS` WRITE;
+/*!40000 ALTER TABLE `ENROLLED_EVENTS` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ENROLLED_EVENTS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `EVENTS`
+--
+
+DROP TABLE IF EXISTS `EVENTS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `EVENTS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `EVENT_NAME` varchar(45) DEFAULT NULL,
+  `EVENT_FROM_TIME` datetime DEFAULT NULL,
+  `EVENT_TO_TIME` datetime DEFAULT NULL,
+  `EVENT_SHORT_DESC` varchar(45) DEFAULT NULL,
+  `EVENT_LONG_DESC` varchar(45) DEFAULT NULL,
+  `EVENT_ADDRESS` varchar(45) DEFAULT NULL,
+  `EVENT_CREATED_BY` bigint(25) DEFAULT NULL,
+  `UNIVERSITY_ID` bigint(25) DEFAULT NULL,
+  `CAPACITY` int(10) DEFAULT NULL,
+  `FEATURED` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `Created_by_idx` (`EVENT_CREATED_BY`),
+  KEY `UNIVERSITY_FK_idx` (`UNIVERSITY_ID`),
+  CONSTRAINT `Created_by` FOREIGN KEY (`EVENT_CREATED_BY`) REFERENCES `USERS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `UNIVERSITY_EV_FK` FOREIGN KEY (`UNIVERSITY_ID`) REFERENCES `UNIVERSITY` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EVENTS`
+--
+
+LOCK TABLES `EVENTS` WRITE;
+/*!40000 ALTER TABLE `EVENTS` DISABLE KEYS */;
+INSERT INTO `EVENTS` VALUES (1,'intexication','2015-02-17 03:00:00.00000','2015-02-17 03:30:00.00000','departmental event',NULL,'Swami Vivekanand Auditorium',3,1,500,1);
+/*!40000 ALTER TABLE `EVENTS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `EVENT_INTERESTS`
+--
+
+DROP TABLE IF EXISTS `EVENT_INTERESTS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `EVENT_INTERESTS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `EVENT_ID` bigint(25) DEFAULT NULL,
+  `INTEREST_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FF11_idx` (`EVENT_ID`),
+  KEY `FF22_idx` (`INTEREST_ID`),
+  CONSTRAINT `FF11` FOREIGN KEY (`EVENT_ID`) REFERENCES `EVENTS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FF22` FOREIGN KEY (`INTEREST_ID`) REFERENCES `INTERESTS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EVENT_INTERESTS`
+--
+
+LOCK TABLES `EVENT_INTERESTS` WRITE;
+/*!40000 ALTER TABLE `EVENT_INTERESTS` DISABLE KEYS */;
+INSERT INTO `EVENT_INTERESTS` VALUES (1,1,1),(2,1,3);
+/*!40000 ALTER TABLE `EVENT_INTERESTS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `EVENT_SKILLS`
+--
+
+DROP TABLE IF EXISTS `EVENT_SKILLS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `EVENT_SKILLS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `EVENT_ID` bigint(25) DEFAULT NULL,
+  `SKILL_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `EVENT_ID_idx` (`EVENT_ID`),
+  KEY `SKILL_ID_idx` (`SKILL_ID`),
+  CONSTRAINT `FEVENT` FOREIGN KEY (`EVENT_ID`) REFERENCES `EVENTS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FSKILL` FOREIGN KEY (`SKILL_ID`) REFERENCES `SKILLS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EVENT_SKILLS`
+--
+
+LOCK TABLES `EVENT_SKILLS` WRITE;
+/*!40000 ALTER TABLE `EVENT_SKILLS` DISABLE KEYS */;
+INSERT INTO `EVENT_SKILLS` VALUES (1,1,1),(2,1,3),(3,1,5),(4,1,4),(5,1,15),(6,1,10),(7,1,21),(8,1,25);
+/*!40000 ALTER TABLE `EVENT_SKILLS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `EVENT_SKILL_SCHEDULE`
+--
+
+DROP TABLE IF EXISTS `EVENT_SKILL_SCHEDULE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `EVENT_SKILL_SCHEDULE` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `Event_ID` bigint(25) DEFAULT NULL,
+  `EVENT_SKILL_ID` bigint(25) DEFAULT NULL,
+  `Event_START_TIME` datetime DEFAULT NULL,
+  `Event_END_TIME` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `EVENT11_idx` (`Event_ID`),
+  KEY `ESKILL11_idx` (`EVENT_SKILL_ID`),
+  CONSTRAINT `ESKILL11` FOREIGN KEY (`EVENT_SKILL_ID`) REFERENCES `EVENT_SKILLS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `EVENT11` FOREIGN KEY (`Event_ID`) REFERENCES `EVENTS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EVENT_SKILL_SCHEDULE`
+--
+
+LOCK TABLES `EVENT_SKILL_SCHEDULE` WRITE;
+/*!40000 ALTER TABLE `EVENT_SKILL_SCHEDULE` DISABLE KEYS */;
+/*!40000 ALTER TABLE `EVENT_SKILL_SCHEDULE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `EVENT_TAGS`
+--
+
+DROP TABLE IF EXISTS `EVENT_TAGS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `EVENT_TAGS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `EVENT_ID` bigint(25) DEFAULT NULL,
+  `TAG_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `EVENT1FF_idx` (`EVENT_ID`),
+  KEY `TAGFF_idx` (`TAG_ID`),
+  CONSTRAINT `EVENT1FF` FOREIGN KEY (`EVENT_ID`) REFERENCES `EVENTS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `TAGFF` FOREIGN KEY (`TAG_ID`) REFERENCES `TAGS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EVENT_TAGS`
+--
+
+LOCK TABLES `EVENT_TAGS` WRITE;
+/*!40000 ALTER TABLE `EVENT_TAGS` DISABLE KEYS */;
+INSERT INTO `EVENT_TAGS` VALUES (1,1,2),(2,1,3),(3,1,5);
+/*!40000 ALTER TABLE `EVENT_TAGS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `EVENT_THEME`
+--
+
+DROP TABLE IF EXISTS `EVENT_THEME`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `EVENT_THEME` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `EVENT_ID` bigint(25) DEFAULT NULL,
+  `THEME_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `EV11_idx` (`EVENT_ID`),
+  KEY `THEM11_idx` (`THEME_ID`),
+  CONSTRAINT `EV11` FOREIGN KEY (`EVENT_ID`) REFERENCES `EVENTS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `THEM11` FOREIGN KEY (`THEME_ID`) REFERENCES `THEMEBADGE` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EVENT_THEME`
+--
+
+LOCK TABLES `EVENT_THEME` WRITE;
+/*!40000 ALTER TABLE `EVENT_THEME` DISABLE KEYS */;
+/*!40000 ALTER TABLE `EVENT_THEME` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `INTERESTS`
+--
+
+DROP TABLE IF EXISTS `INTERESTS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `INTERESTS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `INTEREST_NAME` varchar(45) DEFAULT NULL,
+  `UNIVERSITY_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `UNIVERSITY_IN_FK_idx` (`UNIVERSITY_ID`),
+  CONSTRAINT `UNIVERSITY_IN_FK` FOREIGN KEY (`UNIVERSITY_ID`) REFERENCES `UNIVERSITY` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `INTERESTS`
+--
+
+LOCK TABLES `INTERESTS` WRITE;
+/*!40000 ALTER TABLE `INTERESTS` DISABLE KEYS */;
+INSERT INTO `INTERESTS` VALUES (1,'Reading',NULL),(2,'Singing',NULL),(3,'Playing',NULL);
+/*!40000 ALTER TABLE `INTERESTS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ROLES`
+--
+
+DROP TABLE IF EXISTS `ROLES`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ROLES` (
+  `ID` bigint(25) NOT NULL,
+  `ROLE_NAME` varchar(100) DEFAULT NULL,
+  `UNIVERSITY_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `UNIVERSITY_RO_FK_idx` (`UNIVERSITY_ID`),
+  CONSTRAINT `UNIVERSITY_RO_FK` FOREIGN KEY (`UNIVERSITY_ID`) REFERENCES `UNIVERSITY` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ROLES`
+--
+
+LOCK TABLES `ROLES` WRITE;
+/*!40000 ALTER TABLE `ROLES` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ROLES` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `SKILLS`
+--
+
+DROP TABLE IF EXISTS `SKILLS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SKILLS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `SKILL_NAME` varchar(45) DEFAULT NULL,
+  `SKILL_CATEGORY_ID` bigint(25) DEFAULT NULL,
+  `UNIVERSITY_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `SKILL_CATEGORY_idx` (`SKILL_CATEGORY_ID`),
+  KEY `UNIVERSITY_SK_FK_idx` (`UNIVERSITY_ID`),
+  CONSTRAINT `SKILL_CATEGORY` FOREIGN KEY (`SKILL_CATEGORY_ID`) REFERENCES `SKILL_CATEGORIES` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `UNIVERSITY_SK_FK` FOREIGN KEY (`UNIVERSITY_ID`) REFERENCES `UNIVERSITY` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SKILLS`
+--
+
+LOCK TABLES `SKILLS` WRITE;
+/*!40000 ALTER TABLE `SKILLS` DISABLE KEYS */;
+INSERT INTO `SKILLS` VALUES (1,'Written Communication',1,1),(2,'Oral Communication',1,1),(3,'Non Verbal Communication',1,1),(4,'Active Listening ',1,1),(5,'Contextual Communication',1,1),(6,'Creating and Maintaing relationships',2,1),(7,'Group and team dynamics',2,1),(8,'Measuring progress and sucess',2,1),(9,'Leadership Practice',2,1),(10,'Community Engagement',2,1),(11,'Exploration',3,1),(12,'Application',3,1),(13,'Analyzation',3,1),(14,'Integration',3,1),(15,'Evaluation',3,1),(16,'Research And Assessment',4,1),(17,'Data Collection',4,1),(18,'Data Analysis',4,1),(19,'Communication and research assesment',4,1),(20,'Impact and ethics assessement',4,1),(21,'Ethics and Integrity',5,1),(22,'Professional Development',5,1),(23,'Personal Development',5,1),(24,'Workplace expectations',5,1),(25,'Career Exploration',5,1);
+/*!40000 ALTER TABLE `SKILLS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `SKILL_BADGES`
+--
+
+DROP TABLE IF EXISTS `SKILL_BADGES`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SKILL_BADGES` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `SKILL_BADGE_NAME` varchar(45) DEFAULT NULL,
+  `SKILL_BADGE_POINTS` double DEFAULT NULL,
+  `UNIVERSITY_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `UNIVERSITY_SB_FK_idx` (`UNIVERSITY_ID`),
+  CONSTRAINT `UNIVERSITY_SB_FK` FOREIGN KEY (`UNIVERSITY_ID`) REFERENCES `UNIVERSITY` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SKILL_BADGES`
+--
+
+LOCK TABLES `SKILL_BADGES` WRITE;
+/*!40000 ALTER TABLE `SKILL_BADGES` DISABLE KEYS */;
+/*!40000 ALTER TABLE `SKILL_BADGES` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `SKILL_CATEGORIES`
+--
+
+DROP TABLE IF EXISTS `SKILL_CATEGORIES`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SKILL_CATEGORIES` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `CATEGORY_NAME` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SKILL_CATEGORIES`
+--
+
+LOCK TABLES `SKILL_CATEGORIES` WRITE;
+/*!40000 ALTER TABLE `SKILL_CATEGORIES` DISABLE KEYS */;
+INSERT INTO `SKILL_CATEGORIES` VALUES (1,'Commmunication'),(2,'Collabration'),(3,'Critical Thinking'),(4,'Research And Data'),(5,'Professionalism');
+/*!40000 ALTER TABLE `SKILL_CATEGORIES` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `TAGS`
+--
+
+DROP TABLE IF EXISTS `TAGS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TAGS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `TAG_NAME` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `TAGS`
+--
+
+LOCK TABLES `TAGS` WRITE;
+/*!40000 ALTER TABLE `TAGS` DISABLE KEYS */;
+INSERT INTO `TAGS` VALUES (1,'Family Friendly'),(2,'Free Parking'),(3,'Group Firendly'),(4,'Snacks Included'),(5,'Lunch Included'),(6,'No Food Allowed');
+/*!40000 ALTER TABLE `TAGS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `THEMEBADGE`
+--
+
+DROP TABLE IF EXISTS `THEMEBADGE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `THEMEBADGE` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `THEME_BADGE_NAME` varchar(45) DEFAULT NULL,
+  `THEME_BADGE_POINTS` double DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `THEMEBADGE`
+--
+
+LOCK TABLES `THEMEBADGE` WRITE;
+/*!40000 ALTER TABLE `THEMEBADGE` DISABLE KEYS */;
+/*!40000 ALTER TABLE `THEMEBADGE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `TOP_LEVEL_BADGES`
+--
+
+DROP TABLE IF EXISTS `TOP_LEVEL_BADGES`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TOP_LEVEL_BADGES` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `TOP_BADGE_NAME` varchar(45) DEFAULT NULL,
+  `TOP_BADGE_POINTS` double DEFAULT NULL,
+  `UNIVERSITY_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `UNIVERSITY_TLB_FK_idx` (`UNIVERSITY_ID`),
+  CONSTRAINT `UNIVERSITY_TLB_FK` FOREIGN KEY (`UNIVERSITY_ID`) REFERENCES `UNIVERSITY` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `TOP_LEVEL_BADGES`
+--
+
+LOCK TABLES `TOP_LEVEL_BADGES` WRITE;
+/*!40000 ALTER TABLE `TOP_LEVEL_BADGES` DISABLE KEYS */;
+/*!40000 ALTER TABLE `TOP_LEVEL_BADGES` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `UNIVERSITY`
+--
+
+DROP TABLE IF EXISTS `UNIVERSITY`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `UNIVERSITY` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `UNIVERSITY_NAME` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `UNIVERSITY`
+--
+
+LOCK TABLES `UNIVERSITY` WRITE;
+/*!40000 ALTER TABLE `UNIVERSITY` DISABLE KEYS */;
+INSERT INTO `UNIVERSITY` VALUES (1,'MyUniversity');
+/*!40000 ALTER TABLE `UNIVERSITY` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `USERS`
+--
+
+DROP TABLE IF EXISTS `USERS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `USERS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `FULLNAME` varchar(45) DEFAULT NULL,
+  `PASSWORD` varchar(45) DEFAULT NULL,
+  `EMAIL` varchar(45) DEFAULT NULL,
+  `IS_ACTIVE` tinyint(25) DEFAULT NULL,
+  `PHONE_NUMBER` bigint(25) DEFAULT NULL,
+  `DEVICE_ID` bigint(25) DEFAULT NULL,
+  `DEVICE_TYPE` varchar(45) DEFAULT NULL,
+  `DEVICE_OS_VERSION` bigint(25) DEFAULT NULL,
+  `DEVICE_APP_TOKEN` varchar(45) DEFAULT NULL,
+  `APP_VERSION` bigint(25) DEFAULT NULL,
+  `USER_ROLE` bigint(25) DEFAULT NULL,
+  `UNIVERSITY_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `USER_ROLE_idx` (`USER_ROLE`),
+  KEY `UNIVERSITY_UR_FK_idx` (`UNIVERSITY_ID`),
+  CONSTRAINT `UNIVERSITY_UR_FK` FOREIGN KEY (`UNIVERSITY_ID`) REFERENCES `UNIVERSITY` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `USER_ROLE` FOREIGN KEY (`USER_ROLE`) REFERENCES `ROLES` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `USERS`
+--
+
+LOCK TABLES `USERS` WRITE;
+/*!40000 ALTER TABLE `USERS` DISABLE KEYS */;
+INSERT INTO `USERS` VALUES (1,'devram',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,'Ashvini','Ashu@123','ashu.nagaw@gmail.com',0,9673,56,'pc',8,'Abc',101,NULL,NULL),(3,'Ashu','Ashu@123','ashu.nagawade@gmail.com',1,9673,56,'pc',8,'Abc',101,NULL,NULL);
+/*!40000 ALTER TABLE `USERS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `USER_INTERESTS`
+--
+
+DROP TABLE IF EXISTS `USER_INTERESTS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `USER_INTERESTS` (
+  `ID` bigint(25) NOT NULL AUTO_INCREMENT,
+  `USER_ID` bigint(25) DEFAULT NULL,
+  `INTEREST_ID` bigint(25) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `EUSER_idx` (`USER_ID`),
+  KEY `EINTEREST_idx` (`INTEREST_ID`),
+  CONSTRAINT `EINTEREST` FOREIGN KEY (`INTEREST_ID`) REFERENCES `INTERESTS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `EUSER` FOREIGN KEY (`USER_ID`) REFERENCES `USERS` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `USER_INTERESTS`
+--
+
+LOCK TABLES `USER_INTERESTS` WRITE;
+/*!40000 ALTER TABLE `USER_INTERESTS` DISABLE KEYS */;
+INSERT INTO `USER_INTERESTS` VALUES (1,3,3);
+/*!40000 ALTER TABLE `USER_INTERESTS` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2016-02-05 13:54:28

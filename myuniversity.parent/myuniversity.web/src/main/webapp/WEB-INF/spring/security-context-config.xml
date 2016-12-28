@@ -1,0 +1,79 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                    http://www.springframework.org/schema/security 
+                    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<global-method-security pre-post-annotations="enabled" />
+
+	<!-- <http pattern="/publish" security="none" /> -->
+	<!-- <http pattern="/manageDocs/getDocumentFirstPreview" security="none" 
+		/> -->
+	<!-- <http pattern="/manageDocs/getPublishedDocumentUrl" security="none" 
+		/> -->
+	<!-- <http pattern="/manageDocs/getDocumentPreviewByPageNumber" security="none" 
+		/> -->
+	<!-- <http pattern="/readerTool/saveContentTime" security="none" /> -->
+	<!-- <http pattern="/readerTool/getIdForContents" security="none" /> -->
+
+
+
+	<!--http pattern="resources/**" security="none" /> <http pattern="/login/**" 
+		security="none" / -->
+	<http pattern="/UserRegistration/**" security="none" />
+	<http pattern="/events/**" security="none" />
+	<http pattern="/resource/**" security="none" />
+	<http pattern="/badge/**" security="none" />
+
+	<!-- hasRole([role]) Returns true if the current principal has the specified 
+		role. hasAnyRole([role1,role2]) Returns true if the current principal has 
+		any of the supplied roles (given as a comma-separated list of strings) principal 
+		Allows direct access to the principal object representing the current user 
+		authentication Allows direct access to the current Authentication object 
+		obtained from the SecurityContext permitAll Always evaluates to true denyAll 
+		Always evaluates to false isAnonymous() Returns true if the current principal 
+		is an anonymous user isRememberMe() Returns true if the current principal 
+		is a remember-me user isAuthenticated() Returns true if the user is not anonymous 
+		isFullyAuthenticated() Returns true if the user is not an anonymous or a 
+		remember-me user -->
+	<http use-expressions="true">
+		<intercept-url pattern="/resources/**" access="permitAll" />
+		<intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/login_retry" access="permitAll" />
+		<intercept-url pattern="/UserRegistration/**" access="permitAll" />
+		<intercept-url pattern="/events/**" access="permitAll" />
+		<intercept-url pattern="/resource/**" access="permitAll" />
+		<intercept-url pattern="/loboBadge/**" access="permitAll" />
+		
+		
+		<intercept-url pattern="/**" access="hasRole('ADMIN')" />
+
+
+		<form-login login-page="/login" default-target-url="/"
+			authentication-failure-url="/login_retry" />
+		<!-- access denied page -->
+		<access-denied-handler error-page="/error" />
+		<logout logout-success-url="/login?logout" />
+
+		<!-- <session-management> -->
+		<!-- <concurrency-control -->
+		<!-- max-sessions="1" -->
+		<!-- expired-url="/login" /> -->
+		<!-- </session-management> -->
+
+	</http>
+
+	<authentication-manager>
+		<authentication-provider>
+			<jdbc-user-service data-source-ref="myuniversityDataSource"
+				users-by-username-query="select EMAIL, PASSWORD, true as enabled 
+	    								from USERS e, ROLES r 
+	    								WHERE e.USER_ROLE = r.ID and r.ID=1 and EMAIL=?;"
+				authorities-by-username-query="select e.EMAIL, r.ROLE_NAME
+	    										from USERS e, ROLES r 
+	    										where e.USER_ROLE = r.ID and e.EMAIL=?;" />
+		</authentication-provider>
+	</authentication-manager>
+
+</beans:beans>

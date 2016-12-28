@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>Badge</title>
+
+
+<script src="resources/js/jquery/jquery.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="resources/js/jquery/jquery-ui.min.js"></script>
+
+<style>
+.border-main {
+	padding: 10px;
+	border: 1px solid #BF5573;
+	border-radius: 5px;
+}
+
+.border {
+	padding: 1px;
+	border: 1px solid #BF5573;
+	border-radius: 3px;
+}
+
+.dropdown-spacing {
+	padding: 10px;
+	padding-top: 20px;
+	padding-left: 0px;
+}
+/* enable absolute positioning */
+.inner-addon {
+	position: relative;
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+	position: absolute;
+	padding: 10px;
+	pointer-events: none;
+}
+
+/* align icon */
+.left-addon .glyphicon {
+	left: 0px;
+}
+
+.right-addon .glyphicon {
+	right: 0px;
+}
+
+/* add padding  */
+.left-addon input {
+	padding-left: 30px;
+}
+
+.right-addon input {
+	padding-right: 30px;
+}
+
+.table-head {
+	background-color: #BF5555;
+}
+
+.Dept {
+	margin-left: 0px;
+	list-style-type: none;
+}
+
+.row.eventPanel {
+	height: 448px;
+	min-height: 448px;
+}
+
+.the-legend {
+	border-style: none;
+	border-width: 0;
+	font-size: 14px;
+	line-height: 20px;
+	margin-bottom: 0;
+}
+
+.the-fieldset {
+	border: 2px groove threedface #444;
+}
+
+.btn-margin-right {
+	margin-right: 5px;
+}
+
+.form-group.required .control-input:before {
+	content: "*";
+	color: red;
+}
+</style>
+</head>
+<body ng-cloak>
+	<!--#########################################################-->
+
+	<div class="container"
+		ng-init="getloggedUser();getAllDepartments();getSocialBadge();getAllLoboBadges();">
+		<form name="badgeForm">
+			<div class="row">
+
+				<fieldset class="well the-fieldset">
+					<legend class="the-legend">Create Skill Badges</legend>
+					<div class="col-md-4">
+						<fieldset class="well the-fieldset">
+							<legend class="the-legend">Create Skill Badges</legend>
+							<div class="form-group ">
+							<p id="skillBadgeError1"></p>
+								<label for="bronze">Bronze <input type="text"
+									id="brozePoints" class="form-control"
+									ng-model="skillBadges[0].skillBadgePoints" /></label>
+							</div>
+							<div class="form-group ">
+								<label for="silver">Silver <input type="text"
+									id="silverPoints" class="form-control"
+									ng-model="skillBadges[1].skillBadgePoints" /></label>
+							</div>
+							<div class="form-group ">
+								<label for="gold">Gold <input type="text"
+									id="goldPoints" class="form-control"
+									ng-model="skillBadges[2].skillBadgePoints" /></label>
+							</div>
+							<div class="form-group ">
+								<label for="platinum">Platinum <input type="text"
+									id="platinumPoints" class="form-control"
+									ng-model="skillBadges[3].skillBadgePoints" /></label>
+							</div>
+							<button type="button" class="btn btn-primary pull-right" ng-click="clearSkillBadge()" style="background-color: #c10037">Clear</button>
+							<button type="button"
+								class="btn btn-primary pull-right btn-margin-right"
+								ng-click="validateSkillBadge()" style="background-color: #c10037">Save</button>
+						</fieldset>
+					</div>
+					<div class="col-md-8">
+						<fieldset class="well the-fieldset">
+							<legend class="the-legend">Lobo Badges</legend>
+
+							<table class="table table-bordered" ng-cloak>
+								<thead>
+									<tr>
+										<th></th>
+										<th>Effective Communication</th>
+										<th>Collaboration</th>
+										<th>Critical Thinking</th>
+										<th>professionalism</th>
+										<th>Research&Analysis</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>{{loboBadge[0].loboBadgeName}}</td>
+										<td><select id="effCommunication" ng-model="loboBadge[0].effectiveCommunication" class="form-control">
+												<option value="1">1B</option>
+												<option value="2">2B</option>
+												<option value="3">3B</option>
+												<option value="4">4B</option>
+												<option value="5">5B</option>
+									
+
+										</select></td>
+										<td><select id="collaboration" ng-model="loboBadge[0].collaboration" class="form-control">
+												<option value="1">1B</option>
+												<option value="2">2B</option>
+												<option value="3">3B</option>
+												<option value="4">4B</option>
+												<option value="5">5B</option>
+											
+										</select></td>
+										<td><select id="criticalThinking" ng-model="loboBadge[0].criticalThinking" class="form-control">
+												<option value="1">1B</option>
+												<option value="2">2B</option>
+												<option value="3">3B</option>
+												<option value="4">4B</option>
+												<option value="5">5B</option>
+											
+
+										</select></td>
+										<td><select id="professionalisum" ng-model="loboBadge[0].professinalism" class="form-control">
+												<option value="1">1B</option>
+												<option value="2">2B</option>
+												<option value="3">3B</option>
+												<option value="4">4B</option>
+												<option value="5">5B</option>
+												
+
+										</select></td>
+										<td><select id="researchAnalysis" ng-model="loboBadge[0].researchAnalysis" class="form-control">
+												<option value="1">1B</option>
+												<option value="2">2B</option>
+												<option value="3">3B</option>
+												<option value="4">4B</option>
+												<option value="5">5B</option>
+												
+
+										</select></td>
+									<tr />
+									<tr>
+										<td>{{loboBadge[1].loboBadgeName}}</td>
+										<td><select id="scoutEffCommunication" ng-model="loboBadge[1].effectiveCommunication" class="form-control">
+												<option value="1">1S</option>
+												<option value="2">2S</option>
+												<option value="3">3S</option>
+												<option value="4">4S</option>
+												<option value="5">5S</option>
+												
+
+										</select></td>
+										<td><select id="scoutCollaboration" ng-model="loboBadge[1].collaboration" class="form-control">
+												<option value="1">1S</option>
+												<option value="2">2S</option>
+												<option value="3">3S</option>
+												<option value="4">4S</option>
+												<option value="5">5S</option>
+												
+
+										</select></td>
+										<td><select id="scoutCriticalThinking" ng-model="loboBadge[1].criticalThinking" class="form-control">
+												<option value="1">1S</option>
+												<option value="2">2S</option>
+												<option value="3">3S</option>
+												<option value="4">4S</option>
+												<option value="5">5S</option>
+												
+
+										</select></td>
+										<td><select id="scoutProfessinalism" ng-model="loboBadge[1].professinalism" class="form-control">
+												<option value="1">1S</option>
+												<option value="2">2S</option>
+												<option value="3">3S</option>
+												<option value="4">4S</option>
+												<option value="5">5S</option>
+												
+
+										</select></td>
+										<td><select id="scoutResearchAnalysis" ng-model="loboBadge[1].researchAnalysis" class="form-control">
+												<option value="1">1S</option>
+												<option value="2">2S</option>
+												<option value="3">3S</option>
+												<option value="4">4S</option>
+												<option value="5">5S</option>
+												
+
+										</select></td>
+									<tr />
+									<tr>
+										<td>{{loboBadge[2].loboBadgeName}}</td>
+										<td><select id="loboEffCommunication" ng-model="loboBadge[2].effectiveCommunication" class="form-control">
+												<option value="1">1G</option>
+												<option value="2">2G</option>
+												<option value="3">3G</option>
+												<option value="4">4G</option>
+												<option value="5">5G</option>
+												
+
+										</select></td>
+										<td><select id="loboCollaboration" ng-model="loboBadge[2].collaboration" class="form-control">
+												<option value="1">1G</option>
+												<option value="2">2G</option>
+												<option value="3">3G</option>
+												<option value="4">4G</option>
+												<option value="5">5G</option>
+												
+
+										</select></td>
+										<td><select id="loboCriticalThinking" ng-model="loboBadge[2].criticalThinking" class="form-control">
+												<option value="1">1G</option>
+												<option value="2">2G</option>
+												<option value="3">3G</option>
+												<option value="4">4G</option>
+												<option value="5">5G</option>
+												
+
+										</select></td>
+										<td><select id="loboProfessinalism" ng-model="loboBadge[2].professinalism" class="form-control">
+												<option value="1">1G</option>
+												<option value="2">2G</option>
+												<option value="3">3G</option>
+												<option value="4">4G</option>
+												<option value="5">5G</option>
+												
+
+										</select></td>
+										<td><select id="loboResearchAnalysis" ng-model="loboBadge[2].researchAnalysis" class="form-control">
+												<option value="1">1G</option>
+												<option value="2">2G</option>
+												<option value="3">3G</option>
+												<option value="4">4G</option>
+												<option value="5">5G</option>
+												
+
+										</select></td>
+									<tr />
+									<tr>
+										<td>{{loboBadge[3].loboBadgeName}}</td>
+										<td><select id="pakEffCommunication" ng-model="loboBadge[3].effectiveCommunication" class="form-control">
+												<option value="1">1P</option>
+												<option value="2">2P</option>
+												<option value="3">3P</option>
+												<option value="4">4P</option>
+												<option value="5">5P</option>
+												
+
+										</select></td>
+										<td><select id="pakCollaboration" ng-model="loboBadge[3].collaboration" class="form-control">
+												<option value="1">1P</option>
+												<option value="2">2P</option>
+												<option value="3">3P</option>
+												<option value="4">4P</option>
+												<option value="5">5P</option>
+												
+
+										</select></td>
+										<td><select id="pakCriticalThinking" ng-model="loboBadge[3].criticalThinking" class="form-control">
+												<option value="1">1P</option>
+												<option value="2">2P</option>
+												<option value="3">3P</option>
+												<option value="4">4P</option>
+												<option value="5">5P</option>
+												
+
+										</select></td>
+										<td><select id="pakProfessionalism" ng-model="loboBadge[3].professinalism" class="form-control">
+												<option value="1">1P</option>
+												<option value="2">2P</option>
+												<option value="3">3P</option>
+												<option value="4">4P</option>
+												<option value="5">5P</option>
+												
+
+										</select></td>
+										<td><select id="pakReasearchAnalysis" ng-model="loboBadge[3].researchAnalysis" class="form-control">
+												<option value="1">1P</option>
+												<option value="2">2P</option>
+												<option value="3">3P</option>
+												<option value="4">4P</option>
+												<option value="5">5P</option>
+												
+
+										</select></td>
+									<tr />
+								</tbody>
+
+							</table>
+<!-- 							<button type="button" class="btn btn-primary pull-right" style="background-color: #c10037">Clear</button> -->
+							<button type="button"
+								class="btn btn-primary pull-right btn-margin-right" ng-click="saveLoboBadges();" style="background-color: #c10037">Save</button>
+
+						</fieldset>
+					</div>
+
+				</fieldset>
+
+			</div>
+			<div class="row">
+			<fieldset class="well the-fieldset">
+			<div class="col-md-3" ng-init="getloggedUserBadge();" ng-controller="BadgeController">
+					<fieldset class="well the-fieldset">
+							<legend class="the-legend">Social Badges</legend>
+							<div class="form-group ">
+							<p id="socialEventError"></p>
+							<label for="bronzeEvent">Bronze <input type="text"
+									id="brozebadge" class="form-control" ng-model="socialBadges[0].socialBadgePoints"/></label>
+							</div>
+							<div class="form-group ">
+							<label for="silverEvent">Silver <input type="text"
+									id="silverbadge" class="form-control"  ng-model="socialBadges[1].socialBadgePoints"/></label>
+							</div>
+							<div class="form-group ">
+							<label for="goldEvent">Gold <input type="text"
+									id="goldbadge" class="form-control"  ng-model="socialBadges[2].socialBadgePoints"/></label>
+							</div>
+						<button type="button" class="btn btn-primary pull-right" style="background-color: #c10037" ng-click="clearBadgeEvent()">Clear</button>
+							<button type="button"
+								class="btn btn-primary pull-right btn-margin-right" style="background-color: #c10037" ng-click="validateSocialEvent();">Save</button>
+								
+					
+					</fieldset>
+			
+			
+			</div>
+			<div class="col-md-9">
+				
+				<fieldset class="well the-fieldset"
+							style="height: 320px; overflow: auto;">
+							<legend class="the-legend">Social Badges</legend>
+							<table class="table table-bordered" ng-cloak>
+								<thead>
+									<tr>
+										<th>S.No</th>
+										<th>Badge Name</th>
+										<th>No.of events</th>
+										<th>Description</th>
+										<th>Department</th>
+										<th>Edit</th>
+										<th>Delete</th>
+										
+
+									</tr>
+								</thead>
+								<tbody >
+									<tr id="editRow" ng-repeat="obj in SocialBadge track by $index">
+										<td>{{$index+1}}</td>
+										<td>{{obj.badgeName}}</td>
+										<td>{{obj.numberOfEvents}}</td>
+										<td>{{obj.badgeDescription}}</td>
+										
+										<td>{{obj.deptTemp}}</td>
+										
+										<td><a data-toggle="modal"> <span
+												class="glyphicon glyphicon-pencil"
+												ng-click="setSocailBadgeModal(this)"></span>
+										</a></td>
+										<td><a data-toggle="modal"> <span
+												class="	glyphicon glyphicon-trash"
+												ng-click="deleteSocialBadgeRow(this)"></span>
+										</a></td>
+									</tr>
+								</tbody>
+							</table>
+							
+						</fieldset>
+							<button type="button" class="btn btn-primary pull-right"  data-toggle="modal" data-target="#createSocialModel" ng-click="resetSocialModel();" style="background-color: #c10037">Create Social Badge</button>
+						
+					
+			
+
+			</div>
+			</fieldset>
+			</div>
+			
+		</form>
+
+	</div>
+
+
+	
+	<div class="modal fade" id="saveLoboModel" tabindex="-1" role="dialog"
+		aria-labelledby="successLoboLable" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="successLoboLable"
+						style="text-align: center; color: green;"></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+		
+	<div class="modal fade" id="deleteSocialmodel" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="deleteBadgeMsg"
+						style="text-align: center; color: green;"></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="successSkillmodel" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="skillLable"
+						style="text-align: center; color: green;"></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="successSocialEventmodel" tabindex="-1" role="dialog"
+		aria-labelledby="badgeLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="badgeLabel"
+						style="text-align: center; color: green;"></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal" id="createSocialModel" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel"
+						style="text-align: center; color:#c10037;">Create Social Badge</h4>
+				</div>
+				<p id="createSuccess" style="color:green"></p>
+				<div class="modal-body">
+				
+				<fieldset class="well the-fieldset">
+							<legend class="the-legend">Create Social Badge</legend>
+
+							<div class="row">
+							
+								<div class="col-md-6">
+
+
+
+
+									<div class="form-group required" style="width: 200px">
+
+										<div class="input-group">
+										<label for="badgeName">Badge Name:</label>
+											<input type="text" class="control-input form-control"
+												id="badgeName" placeholder="Enter Badge Name" />
+										</div>
+										<p id="badgeNameError"></p>
+									</div>
+
+
+
+
+									<div class="form-group" style="width: 200px">
+									<label for="noOfEvents">No.Of Events:</label>
+										<select id="noOfEvent" class="form-control">
+											<option value="0" selected>Select no.of Event</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+										</select>
+										<p id="noOfEventError"></p>
+									</div>
+
+									<div class="form-group">
+										<label for="description">Description:</label>
+										<textarea class="form-control" maxlength="100" rows="3" id="description"
+											placeholder="Description"></textarea>
+										<p id="descError"></p>
+									</div>
+								</div>
+
+
+								<div class="col-md-6 form-group">
+									<fieldset class="well the-fieldset"
+										style="height: 250px; overflow: auto;">
+										<legend class="the-legend">
+											<label for="star" style="color: red">* </label>Departments
+										</legend>
+										<p id="deptError"></p>
+										<ul>
+											<li class="Dept" ng-repeat="department in departments">
+												<input class="deptVal" type="checkbox"
+												value="{{department.id}}"> {{department.depName}}
+											</li>
+										</ul>
+									</fieldset>
+
+								</div>
+
+							</div>
+
+
+							<button type="button" class="btn btn-primary pull-right" ng-click="clearSocialBadge();" style="background-color: #c10037">Clear</button>
+							<button type="button"
+								class="btn btn-primary pull-right btn-margin-right"
+								ng-click="validateBadge();" style="background-color: #c10037">Save</button>
+
+
+						</fieldset>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="editSocialModel" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" ng-click="closeEdit()" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel"
+						style="text-align: center; color:#c10037;">Edit Social Badge</h4>
+				</div>
+				<p id="updateSuccess" style="color:green"></p>
+				<div class="modal-body">
+					<!-- 					<form name="editForm"> -->
+
+					<div class="row">
+
+						<div class="col-md-6">
+					
+							<input type="hidden" value="" id="badgeId"/>
+							
+							<div class="form-group" style="width: 200px">
+								
+								<label for="badgeName">Badge Name:</label>
+								<input type="text" class="control-input form-control"
+									id="badgeNameTemp" placeholder="Enter Badge Name"
+									ng-model="socBadge.badgeName" />
+								<p id="badgeNameErrorTemp"></p>
+							</div>
+
+							<div class="form-group" style="width: 200px">
+								
+								<label for="noOfEvents">No.Of Events:</label>
+								<select id="noOfEventTemp" class="form-control"
+									ng-model="socBadge.numberOfEvents">
+									<option value="">Select no.of Event</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+								</select>
+								<p id="noOfEventErrorTemp"></p>
+							</div>
+							<div class="form-group">
+								
+								<label for="description">Description:</label>
+								<textarea class="form-control" rows="4" id="descriptionTemp"
+									placeholder="Description" ng-model="socBadge.badgeDescription"></textarea>
+								<p id="descErrorTemp"></p>
+							</div>
+						</div>
+
+
+						<div class="col-md-6 form-group">
+
+							<fieldset class="well the-fieldset"
+								style="background-color: white; height: 270px; overflow: auto;">
+								<legend class="the-legend">
+									<label for="star" style="color: red">* </label>Departments
+								</legend>
+								<p id="deptErrorTemp"></p>
+								<ul id="deptPop">
+
+									<!-- 										<li class="Dept" ng-repeat="department in departments"><input -->
+									<!-- 											class="deptVal" type="checkbox" value="{{department.id}}"> -->
+									<!-- 											{{department.depName}} -->
+									<!-- 										</li> -->
+								</ul>
+							</fieldset>
+
+						</div>
+
+
+
+
+					
+						<button type="button" class="btn btn-primary pull-right"
+							style="padding: 5px; margin: 5px;background-color: #c10037" ng-click="validateEditBadge();">Update</button>
+<!-- 						<button type="button" class="btn btn-primary pull-right" -->
+<!-- 							style="padding: 5px; margin: 5px" ng-click="clearEditBadge();">Clear</button> -->
+
+					</div>
+
+					<!-- 					</form> -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

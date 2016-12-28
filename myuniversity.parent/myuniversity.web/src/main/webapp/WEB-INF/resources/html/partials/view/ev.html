@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html style="background: white">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>Events</title>
+
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="resources/js/jquery/jquery.min.js"></script>
+<script src="resources/js/datepicker/moment.js"></script>
+<script src="resources/js/datepicker/bootstrap.min.js"></script>
+<script src="resources/js/datepicker/bootstrap-datetimepicker.min.js"></script>
+
+<link rel="stylesheet" href="resources/css/datepicker/bootstrap.min.css" />
+<link rel="stylesheet" href="resources/css/datepicker/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="resources/css/app.css" />
+
+
+
+<style>
+.border-main {
+	padding: 10px;
+	border: 1px solid #BF5573;
+	border-radius: 5px;
+}
+
+.border {
+	padding: 1px;
+	border: 1px solid #BF5573;
+	border-radius: 3px;
+}
+
+.dropdown-spacing {
+	padding: 10px;
+	padding-top: 20px;
+	padding-left: 0px;
+}
+/* enable absolute positioning */
+.inner-addon {
+	position: relative;
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+	position: absolute;
+	padding: 10px;
+	pointer-events: none;
+}
+
+/* align icon */
+.left-addon .glyphicon {
+	left: 0px;
+}
+
+.right-addon .glyphicon {
+	right: 0px;
+}
+
+/* add padding  */
+.left-addon input {
+	padding-left: 30px;
+}
+
+.right-addon input {
+	padding-right: 30px;
+}
+
+.table-head {
+	background-color: #BF5555;
+}
+</style>
+</head>
+<body>
+	<!--#########################################################-->
+
+	<div class="container"
+		ng-init="getEventType();getAllScreenData();getSocialBadge();">
+		<form name="eventForm" ng-submit="submitForm(eventForm.$valid)"
+			novalidate>
+			<div class="row">
+
+				<fieldset class="well the-fieldset">
+					<legend class="the-legend legend-size eventlegendss">Create Event</legend>
+					<div class="col-sm-12">
+						<!-- 					<p id="successModel" style="color:green;"></p> -->
+						<fieldset class="well the-fieldset">
+							<legend class="the-legend legend-size eventlegendss">General</legend>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red">*</label> <label
+										for="eventName">Event Name:</label> <input type="text"
+										class="form-control" name="eventName" id="eventName"
+										placeholder="" ng-model="event.general.eventName" required />
+									<p id="eventNameError"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red">*</label> <label
+										for="eventLoc">Event Location:</label> <input type="text"
+										class="form-control" id="eventLoc" placeholder=""
+										ng-model="event.general.eventAddress" required />
+									<p id="eventLocError"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red">*</label> <label
+										for="eventType">Event Type:</label> <select id="eventType"
+										class="form-control" ng-model="eventTypeId">
+										<option value="0">Select Event Type</option>
+										<option ng-repeat="event in eventTypes" value="{{event.id}}">{{event.eventType}}</option>
+									</select>
+									<p id="eventTypeError"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red">*</label> <label
+										for="capacity">Capacity:</label> <input type="text"
+										class="form-control" id="capacity" placeholder=""
+										ng-model="event.general.capacity">
+									<p id="eventCapacityError"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red">*</label> <label
+										for="eventDate">Start Date&Time:</label>
+									<div class='input-group date' id='datetimepicker1'>
+										<input type='text' id="eventFromTime" class="form-control"
+											ng-model="event.general.eventFromTime"/>
+										<span class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+									<p id="eventStartError"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="star" style="color: red;">*</label> <label
+										for="eventDate">End Date&Time:</label>
+									<div class='input-group date' id='datetimepicker2'>
+										<input type='text' id="eventToTime" class="form-control"
+											ng-model="event.general.eventToTime"/>
+										<span class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+									<p id="eventEndError"></p>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="featured"> 
+									  <input type="checkbox" checked ng-model="event.general.featured"> Featured:
+								    </label>
+								</div>
+								<div class="form-group col-lg-3 col-md-3 col-sm-6">
+									<label for="published">
+									  <input type="checkbox"  ng-model="checkedPublish" ng-init="checkedPublish=true"> Published:</label><br /> 
+<!-- 									<input type="checkbox" checked ng-model="event.general.published"> -->
+								</div>
+						</fieldset>
+					</div>
+					
+					<div class="col-lg-12 col-md-12 col-sm-12">
+						<fieldset class="well the-fieldset">
+							<legend class="the-legend legend-size eventlegendss">Event Description</legend>
+
+							<div class="form-group col-lg-3 col-sm-4 col-md-3" style="padding: 5px;">
+								<label>Event short description:</label>
+								<textarea class="form-control" maxlength="100" rows="3"
+									ng-model="event.general.eventShortDesc" placeholder="short description...">
+								</textarea>
+							</div>
+							<div class="form-group col-lg-3 col-sm-4 col-md-3" style="padding: 5px;">
+								<label for"star" style="color: red">*</label> <label>Event
+									long description:</label>
+								<textarea class="form-control" rows="3"
+									ng-model="event.general.eventLongDesc" id="eventLongDesc" placeholder="long description...">
+									</textarea>
+								<p id="eventLongError"></p>
+							</div>
+							<div class="form-group col-lg-3 col-sm-4 col-md-3" style="padding: 5px;">
+								<label for"star" style="color: red">*</label> <label
+									for="keywordSearch">Keyword Search:</label>
+								<textarea class="form-control" rows="3"
+									ng-model="event.general.keywords"
+									placeholder="keywords are comma seperated.." id="keySearch"></textarea>
+								<p id="keySearchError"></p>
+							</div>
+							<div class="form-group col-lg-3 col-sm-4 col-md-3" style="padding: 5px;">
+								<label for="sponcer">Sponsor:</label>
+								<textarea class="form-control" rows="3"
+									ng-model="event.general.sponsor"
+									placeholder="Sponsors are comma seperated.."></textarea>
+							</div>
+
+						</fieldset>
+					</div>
+					
+					<div class="col-lg-12 col-md-12 col-sm-12">
+					 <fieldset class="well the-fieldset">
+							<legend class="the-legend legend-size eventlegendss">
+								<label for"star" style="color: red">*</label>Assign Badges
+							</legend>
+							<p id="assginBadgeError"></p>
+							<input type="checkbox" ng-model="checked" ng-init="checked=true" ng-change="UncheckSkillvalidationCreate()">
+							Skill Badges &nbsp &nbsp &nbsp <input type="checkbox"
+								id="socialCheck" ng-model="checked_social" ng-change="checkForCreateValidation()"> Social
+							Badges <br /> <br />
+							<fieldset class="well the-fieldset" ng-show="checked">
+								<legend class="the-legend legend-size">Skill Badges</legend>
+								<p id="assginSkillError"></p>
+								<button type="button" class="btn btn-danger pull-right"
+									ng-click="addNewRowSkill()" style="background-color: #c10037">Add Skill Badges</button>
+								<br /> <br />
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>S.No</th>
+											<th>Skill
+												Names&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+											<th>Start Date&Time</th>
+											<th>End Date&Time</th>
+											<th>Duration</th>
+											<th>Category</th>
+											<th>Delete</th>
+										</tr>
+									</thead>
+									<tbody id="skillsTable" style="background-color:white;">
+									</tbody>
+								</table>
+							</fieldset>
+							
+							<fieldset class="well the-fieldset" ng-show="checked_social">
+							<legend class="the-legend legend-size eventlegendss">Social Badges</legend>
+							<p id="assginSocialError"></p>
+							<button type="button" class="btn btn-danger pull-right"
+								ng-click="addNewRowSocial()" style="background-color: #c10037">Add Social Badges</button>
+							<br /> <br />
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>S.No</th>
+										<th>Badge Name</th>
+										<th>Description</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody id="socialTable" style="background-color:white;">
+								</tbody>
+							</table>
+						 </fieldset>
+						</fieldset>
+					</div>
+					
+					<div class="col-sm-12">
+					  <fieldset class="well the-fieldset">
+					   <fieldset class="well the-fieldset col-lg-3 col-md-6 col-sm-6" style="margin:1px; background-color:white;">
+							<legend class="the-legend legend-size eventlegendss">
+								<label for"star" style="color: red">* </label>Tags:
+							</legend>
+							<p id="tagError"></p>
+							<div class="form-group" id="scrollTag" style="height:200px;overflow:auto;">
+							<ul>
+								<li class="tag" ng-repeat="tag in tags"
+									style="list-style: none;"><input class="tagVal"
+									type="checkbox" value="{{tag.id}}"> {{tag.tagName}}</li>
+							</ul>
+							</div>
+						</fieldset>
+						<fieldset class="well the-fieldset col-lg-4 col-md-6 col-sm-6" style="margin:1px; background-color:white;">
+							<legend class="the-legend legend-size eventlegendss" >
+								<label for="star" style="color: red">* </label>Interests:
+							</legend>
+							<p id="interestError"></p>
+							<div class="form-group" id="scrollInt" style="height:200px;overflow:auto;" >
+								<ul>
+
+									<li class="interest" ng-repeat="interest in interests"
+										style="list-style: none;"><input class="interestVal"
+										type="checkbox" value="{{interest.id}}">
+										{{interest.interestName}}</li>
+								</ul>
+							</div>
+						</fieldset>
+						<fieldset class="well the-fieldset col-lg-4 col-md-6 col-sm-6" style="margin:1px; background-color:white;">
+							<legend class="the-legend legend-size eventlegendss" >
+								Advertisements:
+							</legend>
+							
+							<div class="form-group" id="scrollAd" style="height:200px;overflow:auto;" >
+								<ul>
+
+									<li class="advertisement" ng-repeat="advertisement in advertisement"
+										style="list-style: none;"><input class="advertisementVal"
+										type="checkbox" value="{{advertisement.id}}">
+										{{advertisement.name}}</li>
+								</ul>
+							</div>
+						</fieldset>
+					  </fieldset>
+					</div>
+					
+					<div class="col-lg-12 col-md-12 col-sm-12">
+					 <button type="reset" class="btn btn-danger pull-left"
+									style="padding: 5px; margin: 5px; width:100px;background-color: #c10037" ng-click="clearEventScreen();">Clear</button>
+		
+		
+								<button type="submit" 
+									class="btn btn-danger pull-right btn-margin-right"
+									style="padding: 5px; margin: 5px; width:100px;background-color: #c10037">Save</button>
+					</div>
+				</fieldset>
+			</div>
+		</form>
+	</div>
+
+	<div class="modal fade" id="editmodel" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-liabel="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel"
+						style="text-align: center; color: green;"></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+		<div class="modal fade" id="createEventModel" role="dialog"
+		aria-labelledby="editEventLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+
+				<div class="modal-body">
+					<h4 class="modal-title" id="createEventLabel"
+						style="text-align: center; color: green;">Do you want to
+						delete the data?</h4>
+						<button type="button" class="btn btn-danger pull-right"
+							style="background-color: #c10037; display: inline;" ng-click="UncheckedSocialCreate()">Yes</button>
+						<button type="button" class="btn btn-danger"
+							style="background-color: #c10037; display: inline;" ng-click="cantUncheckedSocialCreate()">No</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="createEventModelSkillCheck" role="dialog"
+		aria-labelledby="editEventLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<h4 class="modal-title" id="createEventLabelSocialCheck"
+						style="text-align: center; color: orange;">Do you want to
+						delete the data?</h4>
+						<button type="button" class="btn btn-danger pull-right"
+							style="background-color: #c10037; display: inline;" ng-click="UncheckedSkillCreate()">Yes</button>
+						<button type="button" class="btn btn-danger"
+							style="background-color: #c10037; display: inline;" ng-click="cantUncheckedSkillCreate()">No</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script src="resources/js/custom/screen_app.js"></script>
+</body>
+</html>

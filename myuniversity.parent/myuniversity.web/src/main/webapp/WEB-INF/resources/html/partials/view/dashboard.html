@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>Events</title>
+<script src="resources/js/jquery/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script src="resources/js/datepicker/moment.js"></script>
+<script src="resources/js/datepicker/bootstrap.min.js"></script>
+<script src="resources/js/datepicker/bootstrap-datetimepicker.min.js"></script>
+
+<link rel="stylesheet" href="resources/css/datepicker/bootstrap.min.css" />
+<link rel="stylesheet" href="resources/css/datepicker/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="resources/css/app.css" />
+
+<style>
+.border-main {
+	padding: 10px;
+	border: 1px solid #BF5573;
+	border-radius: 5px;
+}
+
+.border {
+	padding: 1px;
+	border: 1px solid #BF5573;
+	border-radius: 3px;
+}
+
+.dropdown-spacing {
+	padding: 10px;
+	padding-top: 20px;
+	padding-left: 0px;
+}
+/* enable absolute positioning */
+.inner-addon {
+	position: relative;
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+	position: absolute;
+	padding: 10px;
+	pointer-events: none;
+}
+
+/* align icon */
+.left-addon .glyphicon {
+	left: 0px;
+}
+
+.right-addon .glyphicon {
+	right: 0px;
+}
+
+/* add padding  */
+.left-addon input {
+	padding-left: 30px;
+}
+
+.right-addon input {
+	padding-right: 30px;
+}
+
+.table-head {
+	background-color: #BF5555;
+}
+
+.skill, .tag {
+	margin-left: 0px;
+	list-style-type: none;
+}
+
+.row.eventPanel {
+	height: 448px;
+	min-height: 448px;
+}
+
+.the-legend {
+	border-style: none;
+	border-width: 0;
+	font-size: 14px;
+	line-height: 20px;
+	margin-bottom: 0;
+}
+
+.the-fieldset {
+	border: 2px groove threedface #444;
+}
+
+.btn-margin-right {
+	margin-right: 5px;
+}
+.overflow-hidden{
+width:200px;
+height:30px;
+overflow:hidden;
+}
+</style>
+</head>
+<body class="container" ng-controller="MainController">
+	<div ng-init="getAllCurrentUniversityEvents();">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="container">
+			<p id="dateErrorLable"></p>
+				<div class='col-md-3'>
+					<div class="form-group">
+						<div class='input-group date' id='datetimepicker6'>
+							<input type='text' id="startDateDash" class="form-control"
+								placeholder="Start Date&Time"  /> <span
+								class="input-group-addon"> <span
+								class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class='col-md-3'>
+					<div class="form-group">
+						<div class='input-group date' id='datetimepicker7'>
+							<input type='text' id="endDateDash" class="form-control"
+								placeholder="End Date&Time" /> <span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class='col-md-3'>
+				<div class="form-group">
+				    <button type="button" class="btn btn-info" style="width:60px;background-color: #c10037" ng-click="validateDashboardDate();">
+          				<span class="glyphicon glyphicon-search"></span>
+        			</button>
+       			 </div>
+       			 </div>
+				<div class='col-md-3'>
+					<div class="form-group">
+						<div class='input-group date' id='datetimepicker7'>
+							<input type='text'  ng-blur="getAllCurrentUniversityEvents();" id="searchDash" class="form-control"
+								placeholder="search event here" /> <span class="input-group-addon">
+								<span class="glyphicon glyphicon-search" ng-click="getAllCurrentUniversityEvents();"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+        <div calss="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 eventslistdiv" ng-cloak>
+			<div ng-repeat="obj in AllEventBean"  
+				class="col-lg-3 col-md-3 col-sm-3 padding-top">
+				<div class="card card-block text-center">
+					<div id="left" style="width:80px">
+						<span style="font-size: 50px; border-bottom: 1px dashed;"><b>{{obj.day}}</b></span><br>
+						<b>{{obj.month}}</b>
+					</div>
+					<div id="right">
+						<div style="display: block; height: 76px;">
+							<span style="color: #c10037; font-size: 16px">{{obj.eventName}}</span><br>
+							<div class="overflow-hidden" style="padding:3px;word-wrap:break-word;font-size: 11px; color: rgb(166, 166, 166);">{{obj.eventLongDesc}}</div><br>
+							<span style="font-size: 11px; color: rgb(166, 166, 166);">{{obj.eventAddress}}</span>
+						</div>
+						<span><a href="#/editEvent/{{obj.id}}"><i class="glyphicon glyphicon-edit pull-right"></i></a></span>
+					</div>
+				</div>
+			</div>
+			</div>
+    <div calss="col-lg-12 col-md-12 col-sm-12">
+		<ul class="pagination pull-right">
+			<li ng-repeat="count in pageCount">
+				<a href="" ng-click="getAllCurrentUniversityEventsPage(this)">{{count}}</a>
+			</li>
+		</ul>
+		</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="pleaseWaitModel" role="dialog"
+		aria-labelledby="pleaseWaitLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-liabel="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="pleaseWaitLabel"
+						style="text-align: center; color: green;"></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="searchEventModel" role="dialog"
+		aria-labelledby="searchEventLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+					<h4 class="modal-title" id="searchEventLabel"
+						style="text-align: center; color: green;"></h4>
+					<h4 class="modal-title" id="searchEventErrorLabel"
+						style="text-align: center; color: red;"></h4>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+
+
+	<script src="resources/js/custom/screen_app.js"></script>
+</body>
+<script type="text/javascript">
+	$(function() {
+		$('#datetimepicker6').datetimepicker({
+			useCurrent : false
+		});
+		$('#datetimepicker7').datetimepicker({
+			useCurrent : false
+		//Important! See issue #1075
+		});
+		$("#datetimepicker6").on("dp.change", function(e) {
+			$('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+		});
+		$("#datetimepicker7").on("dp.change", function(e) {
+			$('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+		});
+	});
+</script>
+</html>
